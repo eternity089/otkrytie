@@ -16,11 +16,7 @@
   font-weight: 700;
   font-style: normal;
 }
-@font-face {
-  font-family: 'inter';
-  src: url('../fonts/inter/inter.ttf');
-  font-style: normal;
-}
+
 html body{
   font-family: Inter, sans-serif !important
 }
