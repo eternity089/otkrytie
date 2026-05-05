@@ -1,0 +1,261 @@
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>{% block title %}Интернет-магазин "Открытие"{% endblock %}</title>
+    {% load static %}
+    <link rel="shortcut icon" href="{% static 'img/favicon.png' %}" type="image/x-icon">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static '/css/style.css' %}">
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'js/jquery.slim.min.js' %}"></script>
+</head>
+<body>
+    <header class="w-100 d-flex flex-column align-items-center justify-content-center">
+    <div class="mobile-nav w-100 d-flex justify-content-between px-4">
+     <a class="my-3 my-lg-0 w-25 d-lg-none d-block" href="/">
+        <img src="{% static 'img/logo.png' %}" class="w-100" alt="">
+    </a>
+     <a class="nav-link d-flex d-lg-none align-items-center gap-3 my-3 my-xl-0" href="{% url 'cart' %}">
+         <img src="{% static 'img/cart.png' %}" alt="">
+         <span class="cart-count">{{ cart_count }}</span>
+     </a>
+    </div>
+        <nav class="navbar navbar-expand-lg" style="width: 90%">
+          <div class="container-fluid p-0">
+            <a class="w-auto d-none d-lg-block" href="/">
+                <img src="{% static 'img/logo.png' %}" alt="">
+            </a>
+              <ul class="navbar-nav d-flex justify-content-between me-auto mb-2 mb-lg-0">
+               <li class="nav-item dropdown ms-lg-3">
+                  <a class="nav-link d-flex align-items-center gap-3" href="#" data-bs-toggle="dropdown" aria-expanded="false">
+                    <img src="{% static 'img/map.png' %}" alt="">
+                     <span id="current-city-name">
+                        {{ current_city.name|default:"Выберите город" }}
+                    </span>
+                  </a>
+                  <ul class="dropdown-menu" id="city">
+                      {% for city in cities %}
+                        <li><a class="dropdown-item {% if current_city and city.id == current_city.id %}active{% endif %}" href="#" data-id="{{ city.id }}">{{ city.name }}</a></li>
+                      {% endfor %}
+                  </ul>
+                </li>
+              <input type="hidden" name="city" id="city-input" value="{{ current_city.id }}">
+              </ul>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse mt-5 mt-xl-0 ms-xl-5" id="navbarSupportedContent">
+              <ul class="w-100 navbar-nav d-flex align-items-center justify-content-between me-auto mb-2 mb-lg-0">
+              <form action="{% url 'search' %}" method="get" class="d-flex w-75 search" role="search">
+                <input class="form-control w-custom me-2" name="q" type="search" placeholder="Дверь межкомнатная" aria-label="Search"/>
+                <button class="btn btn-outline-primary" type="submit">Поиск</button>
+              </form>
+              <li class="nav-item me-5 ms-3">
+                  <a class="nav-link d-none d-lg-flex align-items-center gap-3 my-3 my-xl-0" href="{% url 'cart' %}">
+                       <img src="{% static 'img/cart.png' %}" alt="">
+                        <span class="cart-count">{{ cart_count }}</span>
+                  </a>
+              </li>
+                  {% if user.is_authenticated %}
+                      <div class="buttons d-flex flex-column w-auto flex-lg-row justify-content-lg-between gap-4 mt-3 mt-md-0">
+                         <form method="post" action="{% url 'logout' %}">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-outline-danger">Выйти</button>
+                        </form>
+                          <a href="{% url 'orders' %}" class="btn btn-outline-danger max-content">Мои заказы</a>
+                          {% if user.is_superuser %}
+                              <a href="{% url 'admin:index' %}" class="btn btn-outline-danger">Управление</a>
+                          {% endif %}
+                    </div>
+                  {% else %}
+                      <div class="buttons d-flex flex-column w-auto flex-lg-row justify-content-lg-between gap-3 mt-3 mt-md-0">
+                          <button class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#exampleModalToggle">Авторизация</button>
+                          <button class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#exampleModalToggle2">Регистрация</button>
+                      </div>
+                  {% endif %}
+              </ul>
+            </div>
+          </div>
+        </nav>
+        <nav class="navbar navbar-expand-lg" style="width: 90%">
+            <div class="container-fluid p-0">
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="w-100 navbar-nav d-flex gap-5 me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a href="{% url 'catalog' slug='sale' %}" class="nav-link text-danger px-0">Акции и скидки</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{% url 'home' %}" class="nav-link">Главная</a>
+                        </li>
+                        {% for category in categories %}
+                         <li class="nav-item">
+                            <a href="{% url 'catalog' slug=category.slug %}" class="nav-link">{{ category.name }}</a>
+                        </li>
+                        {% endfor %}
+                         <li class="nav-item">
+                            <a href="{% url 'about' %}" class="nav-link">О компании</a>
+                        </li>
+                         <li class="nav-item">
+                            <a href="{% url 'contact' %}" class="nav-link">Контакты</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="modal fade" id="exampleModalToggle" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header border-0">
+            <h2 class="d-flex mb-0 justify-content-center w-100" id="exampleModalToggleLabel">Авторизация</h2>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+            {% if user.is_authenticated %}
+                <div class="alert-danger">
+                    <p class="p-1">Вы уже авторизованы</p>
+                    <form action="{% url 'logout' %}" method="post">
+                        <button class="btn btn-outline-danger">Выйти</button>
+                    </form>
+                </div>
+            {% else %}
+            <form method="post" action="{% url 'login' %}">
+            {% csrf_token %}
+              <div class="modal-body">
+                  <div class="mb-3">
+                    {{ login_form.email.label_tag }}
+                     {{ login_form.email }}
+                  </div>
+                  <div class="mb-3">
+                    {{ login_form.password.label_tag }}
+                      {{ login_form.password }}
+                  </div>
+                    <div class="mb-3">
+                        <a href="#" role="button" class="nav-link text-danger" data-bs-target="#exampleModalToggle2" data-bs-toggle="modal" data-bs-dismiss="modal">У меня нет профиля</a>
+                    </div>
+                  <div class="modal-footer border-0 p-0">
+                    <button type="submit" class="mt-2 mx-0 btn btn-outline-danger w-100">Войти</button>
+                  </div>
+              </div>
+            </form>
+            {% endif %}
+        {% if login_error %}
+            <div class="alert alert-danger m-3">
+                {{ login_error }}
+            </div>
+        {% endif %}
+        </div>
+      </div>
+    </div>
+    <div class="modal fade" id="exampleModalToggle2" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header border-0">
+            <h2 class="d-flex mb-0 justify-content-center w-100" id="exampleModalToggleLabel2">Регистрация</h2>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+             <form action="{% url 'register' %}" method="post">
+                 {% csrf_token %}
+              <div class="mb-3">
+                  {{ register_form.name.label_tag }}
+                  {{ register_form.name }}
+                  {% for error in register_form.name.errors %}
+                        <div class="text-danger small">{{ error }}</div>
+                  {% endfor %}
+              </div>
+              <div class="mb-3">
+                    {{ register_form.phone.label_tag }}
+                    {{ register_form.phone }}
+                   {% for error in register_form.phone.errors %}
+                        <div class="text-danger small">{{ error }}</div>
+                   {% endfor %}
+              </div>
+              <div class="mb-3">
+                    {{ register_form.email.label_tag }}
+                    {{ register_form.email }}
+                    {% for error in register_form.email.errors %}
+                        <div class="text-danger small">{{ error }}</div>
+                    {% endfor %}
+              </div>
+               <div class="mb-3">
+                    {{ register_form.password.label_tag }}
+                    {{ register_form.password }}
+              </div>
+               <div class="mb-3">
+                    {{ register_form.password2.label_tag }}
+                    {{ register_form.password2 }}
+              </div>
+                <div class="mb-3 d-flex justify-content-between align-items-center">
+                    <a href="#" role="button" class="nav-link text-danger" data-bs-target="#exampleModalToggle" data-bs-toggle="modal" data-bs-dismiss="modal">У меня есть профиль</a>
+                </div>
+              </div>
+              <div class="modal-footer border-0">
+                <button type="submit" class="btn btn-outline-danger w-100">Зарегистрироваться</button>
+              </div>
+            </div>
+        </form>
+           {% if register_form.non_field_errors %}
+                <div class="alert alert-danger">
+                    {% for error in register_form.non_field_errors %}
+                        <div>{{ error }}</div>
+                    {% endfor %}
+                </div>
+           {% endif %}
+      </div>
+    </div>
+    <main role="main" class="d-flex justify-content-center" style="min-height: 72vh">
+        <div class="starter-template" style="width: 90%">
+            {% include 'app/breadcrumbs.html' %}
+            {% block content %}{% endblock %}
+        </div>
+    </main>
+    <footer class="d-flex justify-content-center align-items-center mt-5">
+        <div class="footer-container my-5 d-flex flex-column flex-lg-row align-items-center justify-content-between">
+            <a href="{% url 'home' %}"><img src="{% static 'img/logo.png' %}" alt=""></a>
+             <nav class="navbar navbar-expand-lg">
+            <div class="container-fluid p-0 w-100">
+                <div class="mt-5 mt-md-0">
+                    <ul class="w-100 navbar-nav d-flex flex-col justify-content-center flex-md-row flex-wrap gap-3 gap-md-5 me-auto mb-2 mb-lg-0">
+                         <li class="nav-item">
+                            <a href="{% url 'catalog' slug='sale' %}" class="nav-link px-0">Акции и скидки</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{% url 'home' %}" class="nav-link">Главная</a>
+                        </li>
+                        {% for category in categories %}
+                         <li class="nav-item">
+                            <a href="{% url 'catalog' slug=category.slug %}" class="nav-link">{{ category.name }}</a>
+                        </li>
+                        {% endfor %}
+                         <li class="nav-item">
+                            <a href="{% url 'about' %}" class="nav-link">О компании</a>
+                        </li>
+                         <li class="nav-item">
+                            <a href="{% url 'contact' %}" class="nav-link">Контакты</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        </div>
+    </footer>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            {% if show_login_modal %}
+                var modal = new bootstrap.Modal(document.getElementById('exampleModalToggle'));
+                modal.show();
+            {% endif %}
+
+            {% if show_register_modal %}
+                var modal = new bootstrap.Modal(document.getElementById('exampleModalToggle2'));
+                modal.show();
+            {% endif %}
+        });
+    </script>
+    <script src="{% static 'js/app.js' %}"></script>
+</body>
+</html>

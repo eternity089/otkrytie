@@ -1,0 +1,136 @@
+
+{% extends 'index.html' %}
+{% load static %}
+{% block title %}
+	Корзина
+{% endblock %}
+{% block content %}
+   <div class="d-flex flex-column flex-lg-row gap-4 w-100">
+    {% if cart_items %}
+        <div class="cart-wrapper border rounded-3 border-secondary d-flex flex-column gap-4 p-4">
+            {% for product in cart_items %}
+                <div class="cart-card d-flex gap-4">
+                    <div class="cart-image">
+                        {% if product.product.photo_file %}
+                            <img src="{{ product.product.photo_file.url }}"
+                                 class="card-img-top h-100"
+                                 alt="{{ product.name }}">
+                        {% else %}
+                            <img src="{% static 'img/category1.png' %}"
+                                 class="card-img-top h-100"
+                                 alt="Нет изображения">
+                        {% endif %}
+                    </div>
+
+                    <div class="card-content w-100">
+                        <div class="card-head d-flex justify-content-between">
+                            <h3>{{ product.product.name }}</h3>
+                            <h3  class="{% if product.product.old_price %}text-danger{% endif %}" >
+                                {% if product.product.old_price %}
+                                    <p class="m-0 fs-6 text-secondary text-decoration-line-through">{{ product.product.old_price }}</p>
+                                {% endif %}
+                                {{ product.product.price }} руб.</h3>
+                        </div>
+
+                        <div class="count d-flex gap-3 mt-3 align-items-center">
+                            <h3 class="m-0">Количество:</h3>
+
+                            <div class="quantity-block input-group">
+                                <button onclick="removeFromCart(this, {{ product.product.pk }})"
+                                        class="btn btn-outline-secondary"
+                                        type="button">
+                                    -
+                                </button>
+
+                                <span class="px-4 py-1 border-top border-bottom border-secondary">
+                                    {{ product.count }}
+                                </span>
+
+                                <button onclick="addToCart(this, {{ product.product.pk }})"
+                                        class="btn btn-outline-secondary"
+                                        type="button">
+                                    +
+                                </button>
+                            </div>
+                        </div>
+
+                        <a href="#" class="mt-4 text-danger nav-link">
+                            Удалить из корзины
+                        </a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="delivery w-25 border rounded-3 border-secondary p-5">
+            <h4>Адрес получения</h4>
+            <div class="dropdown mt-3">
+                <button id="addressDropdown" class="btn btn-outline-secondary dropdown-toggle w-100" type="button" data-bs-toggle="dropdown">
+                    {% if selected_address %}{{ selected_address.name }}{% else %}Выберите адрес{% endif %}
+                </button>
+                <ul id="address-list" class="dropdown-menu w-100">
+                    {% if addresses %}
+                        {% for address in addresses %}
+                            <li>
+                                <a href="#" class="dropdown-item address-item {% if selected_address and address.id == selected_address.id %}active{% endif %}" data-id="{{ address.id }}">{{ address.name }}</a>
+                            </li>
+                        {% endfor %}
+                    {% else %}
+                        <li>
+                            <span class="dropdown-item-text">Сначала выберите город</span>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
+            <input type="hidden" id="addressInput" name="address" value="{{ selected_address.id|default:'' }}">
+            <div class="count">
+                <p class="mt-5 text-secondary">Товары: <span class="cart-count">{{ cart_count }}</span>  шт.</p>
+            </div>
+            <div class="price d-flex w-100 align-items-center justify-content-between">
+                <h3>Итого:</h3>
+                <h3><span id="cart-total">{{ total_price }}</span> руб.</h3>
+            </div>
+            <form action="" method="post" class="button">
+                {% csrf_token %}
+                <button class="mt-2 btn btn-outline-danger w-100">Оформить заказ</button>
+            </form>
+        {% if messages %}
+            {% for message in messages %}
+                <div class="mt-5 alert alert-danger" role="alert">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+        </div>
+    {% else %}
+        <div class="center d-flex justify-content-center align-items-center w-100" style="height: 71vh">
+            <div class="empty p-5 rounded-3">
+                <h2 class="text-center">Корзина пуста</h2>
+            </div>
+        </div>
+    {% endif %}
+    </div>
+    <script>
+        addToCart = async(target,pk) => {
+            const res = await fetch(`/to_cart/${pk}`).then(res => res.json())
+            if(res.count) {
+                target.parentElement.querySelector('span').innerHTML = res.count
+            }
+            updateCartUI()
+        }
+      removeFromCart = async(target,pk) => {
+            const res = await fetch(`/remove_to_cart/${pk}`).then(r => r.json())
+            if (res.error) {
+                alert(res.error)
+                return
+            }
+            if (res.deleted) {
+                location.reload()
+                return
+            }
+            if (res.count) {
+                target.parentElement.querySelector('span').innerHTML = res.count
+            }
+            updateCartUI()
+        }
+    </script>
+{% endblock %}
