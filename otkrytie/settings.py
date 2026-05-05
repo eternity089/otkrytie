@@ -8,8 +8,6 @@ load_dotenv()
 SECRET_KEY=os.getenv("SECRET_KEY")
 DEBUG = os.getenv("DEBUG")
 ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "127.0.0.1,localhost").split(",")
-print("ENV ALLOWED_HOSTS =", os.getenv("ALLOWED_HOSTS"))
-print("FINAL ALLOWED_HOSTS =", ALLOWED_HOSTS)
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -59,7 +57,9 @@ WSGI_APPLICATION = 'otkrytie.wsgi.application'
 
 DATABASES = {
     "default": dj_database_url.config(
-        default=os.getenv("DATABASE_URL")
+        default=os.getenv("DATABASE_URL"),
+        conn_max_age=0,
+        ssl_require=True
     )
 }
 
