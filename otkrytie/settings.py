@@ -8,6 +8,8 @@ load_dotenv()
 SECRET_KEY=os.getenv("SECRET_KEY")
 DEBUG = os.getenv("DEBUG")
 ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "127.0.0.1,localhost").split(",")
+print("ENV ALLOWED_HOSTS =", os.getenv("ALLOWED_HOSTS"))
+print("FINAL ALLOWED_HOSTS =", ALLOWED_HOSTS)
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
