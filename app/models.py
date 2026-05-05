@@ -11,7 +11,6 @@ def get_name_file(instance, filename):
     return '/'.join([get_random_string(length=5) + '_' + filename])
 
 class User(AbstractUser):
-    username = None
     name = models.CharField(max_length=120, verbose_name='Имя', blank=False, null=False)
     phone = models.TextField(max_length=120, verbose_name='Номер телефона', unique=True, blank=False, null=False)
     email = models.EmailField(verbose_name='Электронная почта', unique=True, blank=False)
