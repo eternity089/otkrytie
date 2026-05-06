@@ -65,7 +65,7 @@
               </li>
                   {% if user.is_authenticated %}
                       <div class="buttons d-flex flex-column w-auto flex-lg-row justify-content-lg-between gap-4 mt-3 mt-md-0">
-                         <form method="post" action="{% url 'logout' %}" class="w-100">
+                         <form method="post" action="{% url 'logout' %}">
                             {% csrf_token %}
                             <button type="submit" class="btn btn-outline-danger w-100">Выйти</button>
                         </form>
