@@ -235,6 +235,17 @@ def remove_to_cart(request, pk):
     return  JsonResponse({'count': item_in_cart.count})
 
 @login_required
+def delete_from_cart(request, pk):
+    item = Cart.objects.filter(user=request.user, product_id=pk).first()
+
+    if not item:
+        return JsonResponse({'error': 'Не найдено'}, status=404)
+
+    item.delete()
+
+    return JsonResponse({'deleted': True})
+
+@login_required
 def set_city(request):
     city_id = request.GET.get('city_id')
     request.session['city_id'] = city_id

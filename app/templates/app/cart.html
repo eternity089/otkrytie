@@ -54,7 +54,7 @@
                             </div>
                         </div>
 
-                        <a href="#" class="mt-4 text-danger nav-link">
+                        <a href="#" class="mt-4 text-danger nav-link delete-from-cart"  data-id="{{ item.product.id }}">
                             Удалить из корзины
                         </a>
                     </div>
@@ -132,5 +132,24 @@
             }
             updateCartUI()
         }
+        document.querySelectorAll('.delete-from-cart').forEach(btn => {
+        btn.addEventListener('click', function () {
+            const productId = this.dataset.id;
+
+            fetch(`/cart/delete/${productId}/`, {
+                method: 'GET',
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.deleted) {
+                    this.closest('.cart-item').remove();
+                    location.reload();
+                }
+            });
+        });
+    });
     </script>
 {% endblock %}
