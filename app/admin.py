@@ -5,7 +5,7 @@ from .forms import OrderForm
 
 class OrderAdmin(admin.ModelAdmin):
     list_filter = ('status',)
-    list_display = ('date','user','count_product')
+    list_display = ('date','user','count_product', 'comment')
     form = OrderForm
     fields = ('status', 'reject_reason')
 

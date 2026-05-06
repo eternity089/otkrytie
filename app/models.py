@@ -76,7 +76,7 @@ class Order(models.Model):
             count += item_order.count
         return count
     def __str__(self):
-        return self.date.ctime() + ' ' + self.user.name + ' ' + str(self.count_product())
+        return self.date.ctime() + ' ' + self.user.name + ' ' + str(self.count_product()) + ' ' + str(self.comment)
 
 class ItemInOrder(models.Model):
     order = models.ForeignKey('Order', on_delete=models.CASCADE)

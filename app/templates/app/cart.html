@@ -83,6 +83,8 @@
                 </ul>
             </div>
             <input type="hidden" id="addressInput" name="address" value="{{ selected_address.id|default:'' }}">
+            <form action="" method="post" class="button">
+                {% csrf_token %}
             <div class="mt-3">
                 <label class="form-label">Комментарий к заказу</label>
                 <textarea
@@ -100,8 +102,6 @@
                 <h3>Итого:</h3>
                 <h3><span id="cart-total">{{ total_price }}</span> руб.</h3>
             </div>
-            <form action="" method="post" class="button">
-                {% csrf_token %}
                 <button class="mt-2 btn btn-outline-danger w-100">Оформить заказ</button>
             </form>
         {% if messages %}
