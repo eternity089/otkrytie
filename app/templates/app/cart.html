@@ -148,7 +148,7 @@
                 .then(res => res.json())
                 .then(data => {
                     if (data.deleted) {
-                        this.closest('.card-cart').remove()
+                        this.closest('.cart-card').remove()
                         updateCartUI()
                     }
                 })
