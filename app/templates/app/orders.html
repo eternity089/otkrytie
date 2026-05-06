@@ -28,9 +28,24 @@
                       <h4 class="inter fw-normal text-secondary card-title mb-3">Товары: {{ order.count_product }} шт.</h4>
                       <h4 class="inter fw-normal text-secondary card-title mb-3">Стоимость: {{ order.total_price }} руб.</h4>
                   </div>
-                {% if order.status == 'canceled' %}
-                	<div class="card-footer border-0">
-                    <p class="text-danger">Причина отмены: {{ order.reject_reason }}</p>
+                {% if order.status == 'canceled' or order.comment %}
+                	<div class="card-footer border-0 order-footer">
+                        {% if order.status == 'canceled' %}
+                            <div class="comment-wrapper">
+                                <p class="text-danger">Причина отмены: {{ order.reject_reason }}</p>
+                                 <button class="toggle-comment btn btn-link p-0 mt-1 d-none">
+                                     Показать полностью
+                                 </button>
+                            </div>
+                        {% endif %}
+                        {% if order.comment %}
+                            <div class="comment-wrapper">
+                        	    <p class="comment-text mb-0">Комментарий: {{ order.comment }}</p>
+                                 <button class="toggle-comment btn btn-link p-0 mt-1 d-none">
+                                    Показать полностью
+                                 </button>
+                            </div>
+                        {% endif %}
                     </div>
                 {% endif %}
                 </div>
@@ -47,5 +62,25 @@
             </div>
         </div>
     {% endif %}
-
+    <script>
+        document.querySelectorAll('.comment-wrapper').forEach(wrapper => {
+        const text = wrapper.querySelector('.comment-text')
+        const btn = wrapper.querySelector('.toggle-comment')
+        if (!text || !btn) return
+        if (text.scrollHeight > text.clientHeight) {
+            btn.classList.remove('d-none')
+        }
+        let expanded = false
+        btn.addEventListener('click', () => {
+            expanded = !expanded
+            if (expanded) {
+                text.style.webkitLineClamp = 'unset'
+                btn.textContent = 'Скрыть'
+            } else {
+                text.style.webkitLineClamp = '2'
+                btn.textContent = 'Показать полностью'
+            }
+        })
+    })
+    </script>
 {% endblock %}
