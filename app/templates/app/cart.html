@@ -54,10 +54,10 @@
                             </div>
                         </div>
 
-                        <a href="" class="mt-4 text-danger nav-link delete-from-cart"
-                           data-id="{{ item.product.id }}">
+                        <button type="button" class="mt-4 text-danger nav-link delete-from-cart"
+                           data-id="{{ product.product.id }}">
                             Удалить из корзины
-                        </a>
+                        </button>
                     </div>
                 </div>
             {% endfor %}
@@ -135,9 +135,9 @@
         }
         document.querySelectorAll('.delete-from-cart').forEach(link => {
             link.addEventListener('click', function (e) {
-                e.preventDefault();
+                e.preventDefault()
 
-                const productId = this.dataset.id;
+                const productId = this.dataset.id
 
                 fetch(`/cart/delete/${productId}/`, {
                     method: 'GET',
@@ -148,10 +148,11 @@
                 .then(res => res.json())
                 .then(data => {
                     if (data.deleted) {
-                        this.closest('.cart-item').remove();
+                        this.closest('.card-cart').remove()
+                        updateCartUI()
                     }
-                });
-            });
-        });
+                })
+            })
+        })
     </script>
 {% endblock %}
