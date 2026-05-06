@@ -77,25 +77,4 @@
     </div>
 </div>
 {% endif %}
-    <script>
-        document.querySelectorAll('.comment-wrapper').forEach(wrapper => {
-        const text = wrapper.querySelector('.comment-text')
-        const btn = wrapper.querySelector('.toggle-comment')
-        if (!text || !btn) return
-        if (text.scrollHeight > text.clientHeight) {
-            btn.classList.remove('d-none')
-        }
-        let expanded = false
-        btn.addEventListener('click', () => {
-            expanded = !expanded
-            if (expanded) {
-                text.style.webkitLineClamp = 'unset'
-                btn.textContent = 'Скрыть'
-            } else {
-                text.style.webkitLineClamp = '2'
-                btn.textContent = 'Показать полностью'
-            }
-        })
-    })
-    </script>
 {% endblock %}
