@@ -66,6 +66,7 @@ class Order(models.Model):
     products = models.ManyToManyField('Product', through='ItemInOrder', related_name='orders')
     city = models.ForeignKey('City', on_delete=models.CASCADE)
     address = models.ForeignKey('Address', on_delete=models.CASCADE)
+    comment = models.TextField(blank=True, null=True, verbose_name='Комментарий к заказу')
 
     def status_verbose(self):
         return dict(self.STATUS_CHOICES)[self.status]

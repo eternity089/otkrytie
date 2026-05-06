@@ -155,10 +155,12 @@ def cart(request):
         if not address_id:
             messages.error(request, 'Выберите адрес')
             return redirect('cart')
+        comment = request.POST.get('comment')
         order = Order.objects.create(
             user=request.user,
             city_id=city_id if city_id else None,
-            address_id=address_id
+            address_id=address_id,
+            comment = comment if comment else None,
         )
         for item in cart_items:
             ItemInOrder.objects.create(

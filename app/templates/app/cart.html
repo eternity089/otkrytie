@@ -83,6 +83,16 @@
                 </ul>
             </div>
             <input type="hidden" id="addressInput" name="address" value="{{ selected_address.id|default:'' }}">
+            <div class="mt-3">
+                <label class="form-label">Комментарий к заказу</label>
+                <textarea
+                    name="comment"
+                    id="order-comment"
+                    class="form-control"
+                    rows="3"
+                    placeholder="Например: позвонить перед доставкой">
+                </textarea>
+            </div>
             <div class="count">
                 <p class="mt-5 text-secondary">Товары: <span class="cart-count">{{ cart_count }}</span>  шт.</p>
             </div>
