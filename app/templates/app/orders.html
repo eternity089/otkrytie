@@ -37,6 +37,13 @@
                                      Показать полностью
                                  </button>
                             </div>
+                        {% else if order.reject_reason %}
+                            <div class="comment-wrapper">
+                                <p class="text-warning">Администратор: {{ order.reject_reason }}</p>
+                                 <button class="toggle-comment btn btn-link p-0 mt-1 d-none">
+                                     Показать полностью
+                                 </button>
+                            </div>
                         {% endif %}
                         {% if order.comment %}
                             <div class="comment-wrapper">
