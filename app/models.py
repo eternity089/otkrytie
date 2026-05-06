@@ -7,7 +7,7 @@ from django.utils.translation import gettext_lazy as _
 
 
 # Create your models here.
-def get_name_file(filename):
+def get_name_file(instance, filename):
     return filename
 
 class User(AbstractUser):
