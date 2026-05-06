@@ -7,7 +7,7 @@
     <div class="mt-5 d-flex flex-column flex-lg-row justify-content-center align-items-center gap-5 w-100">
         <div class="image w-25">
              {% if product.photo_file %}
-                <img src="{{ product.photo_file.url }}" class=" w-100 mt-3" alt="{{ product.name }}">
+                <img src="{{ product.photo_file.url }}" class=" w-100 h-100 mt-3" alt="{{ product.name }}">
             {% else %}
                 <img src="{% static 'img/category1.png' %}" class="card-img mt-3 w-50 mx-auto" alt="Нет изображения">
             {% endif %}
