@@ -53,11 +53,11 @@
             </button>
             <div class="collapse navbar-collapse mt-5 mt-xl-0 ms-xl-5" id="navbarSupportedContent">
               <ul class="w-100 navbar-nav d-flex align-items-center justify-content-between me-auto mb-2 mb-lg-0">
-              <form action="{% url 'search' %}" method="get" class="d-flex w-75 search" role="search">
+              <form action="{% url 'search' %}" method="get" class="d-flex w-50 search" role="search">
                 <input class="form-control w-custom me-2" name="q" type="search" placeholder="Дверь межкомнатная" aria-label="Search"/>
                 <button class="btn btn-outline-primary" type="submit">Поиск</button>
               </form>
-              <li class="nav-item me-5 ms-3">
+              <li class="nav-item">
                   <a class="nav-link d-none d-lg-flex align-items-center gap-3 my-3 my-xl-0" href="{% url 'cart' %}">
                        <img src="{% static 'img/cart.png' %}" alt="">
                         <span class="cart-count">{{ cart_count }}</span>
