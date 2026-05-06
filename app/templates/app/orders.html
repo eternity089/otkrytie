@@ -13,16 +13,16 @@
         <div class="order-main d-flex justify-content-between align-items-center p-3">
             <div class="order-left d-flex gap-4 flex-wrap">
                 <div class="cell">
-                    <span class="label">Дата</span>
+                    <span class="label">Дата:</span>
                     <span class="value">{{ order.date|date:"d.m.Y" }}</span>
                 </div>
                 <div class="cell">
-                    <span class="label">Кол-во</span>
+                    <span class="label">Кол-во:</span>
                     <span class="value">{{ order.count_product }} шт.</span>
                 </div>
                 <div class="cell">
-                    <span class="label">Стоимость</span>
-                    <span class="value">{{ order.total_price }} ₽</span>
+                    <span class="label">Стоимость:</span>
+                    <span class="value">{{ order.total_price }} руб.</span>
                 </div>
             </div>
             <div class="order-right d-flex align-items-center gap-2">
@@ -52,8 +52,8 @@
                     Причина отмены: {{ order.reject_reason }}
                 </p>
             {% elif order.reject_reason %}
-                <p class="text-warning mb-1">
-                    Ответ администратора: {{ order.reject_reason }}
+                <p class="text-success mb-1">
+                    Ответ Администратора: {{ order.reject_reason }}
                 </p>
             {% endif %}
             {% if order.comment %}
