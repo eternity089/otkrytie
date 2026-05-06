@@ -7,8 +7,8 @@ from django.utils.translation import gettext_lazy as _
 
 
 # Create your models here.
-def get_name_file(instance, filename):
-    return '/'.join([get_random_string(length=5) + '_' + filename])
+def get_name_file(filename):
+    return filename
 
 class User(AbstractUser):
     username = models.CharField(max_length=120, blank=True, null=True)
