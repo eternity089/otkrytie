@@ -67,11 +67,11 @@
                       <div class="buttons d-flex flex-column w-auto flex-lg-row justify-content-lg-between gap-4 mt-3 mt-md-0">
                          <form method="post" action="{% url 'logout' %}" class="w-100">
                             {% csrf_token %}
-                            <button type="submit" class="btn btn-outline-danger">Выйти</button>
+                            <button type="submit" class="btn btn-outline-danger w-100">Выйти</button>
                         </form>
-                          <a href="{% url 'orders' %}" class="btn btn-outline-danger max-content w-100">Мои заказы</a>
+                          <a href="{% url 'orders' %}" class="wid btn btn-outline-danger max-content">Мои заказы</a>
                           {% if user.is_superuser %}
-                              <a href="{% url 'admin:index' %}" class="btn btn-outline-danger w-100">Управление</a>
+                              <a href="{% url 'admin:index' %}" class="wid btn btn-outline-danger">Управление</a>
                           {% endif %}
                     </div>
                   {% else %}

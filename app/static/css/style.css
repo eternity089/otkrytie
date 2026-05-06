@@ -77,6 +77,9 @@ footer{
 }
 
 @media (max-width: 768px) {
+  .wid{
+    width: 100% !important;
+  }
   .w-custom{
     width: 100% !important;
   }
