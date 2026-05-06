@@ -77,6 +77,9 @@ footer{
 }
 
 @media (max-width: 768px) {
+    .card-home h4{
+        font-size: 1.2rem !important;
+    }
   .wid{
     width: 100% !important;
   }
@@ -99,7 +102,7 @@ footer{
 }
 @media (max-width: 480px) {
     .card-home h4{
-        font-size: 16px;
+        font-size: 16px !important;
     }
   .carousel-item{
     height: 25vh !important;
