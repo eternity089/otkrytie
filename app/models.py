@@ -5,11 +5,6 @@ from django.urls import reverse
 from django.utils.crypto import get_random_string
 from django.utils.translation import gettext_lazy as _
 
-
-# Create your models here.
-def get_name_file(instance, filename):
-    return filename
-
 class User(AbstractUser):
     username = models.CharField(max_length=120, blank=True, null=True)
     name = models.CharField(max_length=120, verbose_name='Имя', blank=False, null=False)
@@ -25,7 +20,7 @@ class User(AbstractUser):
 class Product(models.Model):
     name = models.CharField(max_length=120, verbose_name='Название', blank=False)
     date = models.DateTimeField(verbose_name='Дата добавления', auto_now_add=True)
-    photo_file = models.ImageField(max_length=120, upload_to=get_name_file, blank=True, null=True,
+    photo_file = models.ImageField(max_length=120, upload_to='/products', blank=True, null=True,
                                    validators=[FileExtensionValidator(['jpg', 'png', 'jpeg'])])
     country = models.CharField(max_length=120, verbose_name='Страна производства', blank=False, null=False)
     height = models.IntegerField(verbose_name='Высота', blank=True, default=0)
